@@ -1,0 +1,25 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "256"
+    vb.cpus = 1
+  end
+  config.vm.define "haproxy-master" do |node|
+    node.vm.network "private_network", ip: "192.168.33.10"
+    node.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ansible/haproxy-master.yml"
+    end
+  end
+  config.vm.define "haproxy-slave" do |node|
+    node.vm.network "private_network", ip: "192.168.33.11"
+    node.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ansible/haproxy-slave.yml"
+    end
+  end
+  config.vm.define "haproxy-virtualip" do |node|
+    node.vm.network "private_network", ip: "192.168.33.12"
+    node.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ansible/haproxy-virtualip.yml"
+    end
+  end
+end

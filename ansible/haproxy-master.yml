@@ -1,0 +1,11 @@
+- hosts: haproxy-master
+  become: true
+  tasks:
+    - name: Install HAProxy
+      yum:
+        name: haproxy
+        state: present
+    - name: Configure HAProxy
+      template:
+        src: templates/haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
